@@ -1,7 +1,9 @@
 [package]
-name = "fin-report"
+name = "fin_report"
 version = "0.1.0"
 edition = "2021"
+default-run = "fin_report"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,9 +11,14 @@ edition = "2021"
 actix-cors = "0.7.0"
 actix-web = "4.5.1"
 actix-web-lab = "0.20.2"
+chrono = "0.4.35"
 dotenvy = "0.15.7"
 env_logger = "0.11.3"
 juniper = "0.15.12"
 log = "0.4.21"
 sqlx = { version = "0.7.3", features = ["sqlite", "migrate", "runtime-tokio"] }
 tokio = { version = "1.36.0", features = ["full"] }
+
+[[bin]]
+name = "seed"
+path = "src/bin/seed.rs"
