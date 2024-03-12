@@ -1,6 +1,6 @@
 CREATE TABLE transactions (
     id TEXT PRIMARY KEY,
-    product_id INTEGER,
+    product_id TEXT,
     amount REAL NOT NULL,
     description TEXT,
     date TEXT NOT NULL,

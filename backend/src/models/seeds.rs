@@ -1,5 +1,9 @@
+use chrono::{Duration, NaiveDate};
+use rand::{distributions::Alphanumeric, Rng};
 use sqlx::SqlitePool;
-use std::collections::HashSet;
+use uuid::Uuid;
+
+use super::transaction::TransactionType;
 
 pub async fn seed_products(pool: &SqlitePool) -> Result<(), sqlx::Error> {
     let products_data = vec![
@@ -26,8 +30,11 @@ pub async fn seed_products(pool: &SqlitePool) -> Result<(), sqlx::Error> {
     ];
 
     for (name, price) in products_data.iter() {
+        let id = Uuid::new_v4(); // Generate a new UUID for each product
+
         let _ = sqlx::query!(
-            "INSERT INTO products (name, price) VALUES (?, ?)",
+            "INSERT INTO products (id, name, price) VALUES (?, ?, ?)",
+            id,
             name,
             price
         )
@@ -50,10 +57,57 @@ pub async fn seed_transactions(
         return Err(sqlx::Error::RowNotFound);
     }
 
-    let product_id: Option<i32> =
-        sqlx::query_scalar("SELECT id FROM products ORDER BY RANDOM() LIMIT 1")
-            .fetch_optional(pool)
-            .await?;
+    let mut rng = rand::thread_rng();
+
+    for _ in 0..num_transactions {
+        let id = Uuid::new_v4();
+        let product_id: Option<Uuid> =
+            sqlx::query_scalar("SELECT id FROM products ORDER BY RANDOM() LIMIT 1")
+                .fetch_optional(pool)
+                .await?;
+        let amount = rng.gen_range(10.0..=1000.0);
+        let date = generate_random_date();
+        let description: Option<String> = Some(
+            rng.clone()
+                .sample_iter(&Alphanumeric)
+                .take(rng.gen_range(10..=20))
+                .map(char::from)
+                .collect(),
+        );
+
+        let transaction_type = if rng.gen_bool(0.5) {
+            TransactionType::Sale
+        } else {
+            TransactionType::Buy
+        };
+
+        let transaction_type_str = match transaction_type {
+            TransactionType::Sale => "sale",
+            TransactionType::Buy => "buy",
+        };
+
+        sqlx::query(
+            "INSERT INTO transactions (id, product_id, amount, description, date, transaction_type)
+             VALUES (?, ?, ?, ?, ?, ?)",
+        )
+        .bind(id)
+        .bind(product_id)
+        .bind(amount)
+        .bind(description)
+        .bind(date)
+        .bind(transaction_type_str)
+        .execute(pool)
+        .await?;
+    }
 
     Ok(())
+}
+
+fn generate_random_date() -> NaiveDate {
+    let start_date = NaiveDate::from_ymd_opt(2022, 1, 1);
+    let end_date = NaiveDate::from_ymd_opt(2024, 1, 1);
+    let range = end_date.unwrap().signed_duration_since(start_date.unwrap());
+    let mut rng = rand::thread_rng();
+    let offset = Duration::try_days(rng.gen_range(0..range.num_days()));
+    start_date.unwrap() + offset.unwrap()
 }
