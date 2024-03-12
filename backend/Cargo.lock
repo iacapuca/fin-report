@@ -506,7 +506,7 @@ dependencies = [
  "rand 0.7.3",
  "serde",
  "serde_json",
- "uuid",
+ "uuid 0.8.2",
 ]
 
 [[package]]
@@ -568,6 +568,7 @@ dependencies = [
  "iana-time-zone",
  "js-sys",
  "num-traits",
+ "serde",
  "wasm-bindgen",
  "windows-targets 0.52.4",
 ]
@@ -853,8 +854,11 @@ dependencies = [
  "env_logger",
  "juniper",
  "log",
+ "rand 0.8.5",
+ "serde",
  "sqlx",
  "tokio",
+ "uuid 1.7.0",
 ]
 
 [[package]]
@@ -1277,7 +1281,7 @@ dependencies = [
  "smartstring",
  "static_assertions",
  "url",
- "uuid",
+ "uuid 0.8.2",
 ]
 
 [[package]]
@@ -2035,6 +2039,7 @@ dependencies = [
  "atoi",
  "byteorder",
  "bytes",
+ "chrono",
  "crc",
  "crossbeam-queue",
  "dotenvy",
@@ -2063,6 +2068,7 @@ dependencies = [
  "tokio-stream",
  "tracing",
  "url",
+ "uuid 1.7.0",
 ]
 
 [[package]]
@@ -2097,6 +2103,7 @@ dependencies = [
  "sha2",
  "sqlx-core",
  "sqlx-mysql",
+ "sqlx-postgres",
  "sqlx-sqlite",
  "syn 1.0.109",
  "tempfile",
@@ -2115,6 +2122,7 @@ dependencies = [
  "bitflags 2.4.2",
  "byteorder",
  "bytes",
+ "chrono",
  "crc",
  "digest",
  "dotenvy",
@@ -2143,6 +2151,7 @@ dependencies = [
  "stringprep",
  "thiserror",
  "tracing",
+ "uuid 1.7.0",
  "whoami",
 ]
 
@@ -2156,6 +2165,7 @@ dependencies = [
  "base64 0.21.7",
  "bitflags 2.4.2",
  "byteorder",
+ "chrono",
  "crc",
  "dotenvy",
  "etcetera",
@@ -2182,6 +2192,7 @@ dependencies = [
  "stringprep",
  "thiserror",
  "tracing",
+ "uuid 1.7.0",
  "whoami",
 ]
 
@@ -2192,6 +2203,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "210976b7d948c7ba9fced8ca835b11cbb2d677c59c79de41ac0d397e14547490"
 dependencies = [
  "atoi",
+ "chrono",
  "flume",
  "futures-channel",
  "futures-core",
@@ -2206,6 +2218,7 @@ dependencies = [
  "tracing",
  "url",
  "urlencoding",
+ "uuid 1.7.0",
 ]
 
 [[package]]
@@ -2494,6 +2507,16 @@ name = "uuid"
 version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc5cf98d8186244414c848017f0e2676b3fcb46807f6668a97dfe67359a3c4b7"
+
+[[package]]
+name = "uuid"
+version = "1.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f00cc9702ca12d3c81455259621e676d0f7251cec66a21e98fe2e9a37db93b2a"
+dependencies = [
+ "getrandom 0.2.12",
+ "serde",
+]
 
 [[package]]
 name = "vcpkg"

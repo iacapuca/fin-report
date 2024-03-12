@@ -1,4 +1,5 @@
 use sqlx::SqlitePool;
+use std::collections::HashSet;
 
 pub async fn seed_products(pool: &SqlitePool) -> Result<(), sqlx::Error> {
     let products_data = vec![
@@ -33,6 +34,26 @@ pub async fn seed_products(pool: &SqlitePool) -> Result<(), sqlx::Error> {
         .execute(pool)
         .await?;
     }
+
+    Ok(())
+}
+
+pub async fn seed_transactions(
+    pool: &SqlitePool,
+    num_transactions: usize,
+) -> Result<(), sqlx::Error> {
+    let product_exists: bool = sqlx::query_scalar("SELECT EXISTS (SELECT 1 FROM products LIMIT 1)")
+        .fetch_one(pool)
+        .await?;
+
+    if !product_exists {
+        return Err(sqlx::Error::RowNotFound);
+    }
+
+    let product_id: Option<i32> =
+        sqlx::query_scalar("SELECT id FROM products ORDER BY RANDOM() LIMIT 1")
+            .fetch_optional(pool)
+            .await?;
 
     Ok(())
 }

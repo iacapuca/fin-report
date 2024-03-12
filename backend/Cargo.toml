@@ -11,13 +11,22 @@ default-run = "fin_report"
 actix-cors = "0.7.0"
 actix-web = "4.5.1"
 actix-web-lab = "0.20.2"
-chrono = "0.4.35"
+chrono = { version = "0.4.35", features = ["serde"] }
 dotenvy = "0.15.7"
 env_logger = "0.11.3"
-juniper = "0.15.12"
+juniper = { version = "0.15.12", features = ["uuid"] }
 log = "0.4.21"
-sqlx = { version = "0.7.3", features = ["sqlite", "migrate", "runtime-tokio"] }
+rand = "0.8.5"
+serde = "1.0.197"
+sqlx = { version = "0.7.3", features = [
+    "sqlite",
+    "migrate",
+    "runtime-tokio",
+    "chrono",
+    "uuid",
+] }
 tokio = { version = "1.36.0", features = ["full"] }
+uuid = { version = "1.7.0", features = ["serde", "v4"] }
 
 [[bin]]
 name = "seed"
